@@ -1,0 +1,143 @@
+﻿@model TuitionManagement.Models.Student
+@{
+    ViewData["Title"] = "Edit";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNU - Hệ thống quản lý học phí sinh viên</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/AddStudent.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img style="width:60px; height:50px; margin:10px 0;" src="https://fitdnu.net/pluginfile.php/1/theme_edumy/headerlogo1/1740219710/logo-dnu.png">
+        </div>
+        <div class="user-info">
+            <div class="notification">🔔</div>
+            <a href="#" style="text-decoration: none;" class="user-avatar">A</a>
+            <span>Admin</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul>
+                <li class="active"><a asp-action="Index" asp-controller="QLSV" style="text-decoration:none;color:black">👥 Quản lý sinh viên</a></li>
+                <li><a asp-action="Index" asp-controller="QLHP" style="text-decoration:none;color:black">💰 Quản lý học phí</a></li>
+                <li>
+                    <a asp-action="Index" asp-controller="LSGD" style="text-decoration:none;color:black">
+                        📈 Lịch sử giao dịch
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Setting" asp-controller="Account" style="text-decoration:none;color:black">
+                        ⚙️ Cài đặt
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>Cập nhật thông tin sinh viên </h2>
+                </div>
+                <div class="container">
+                    <div class="content">
+                        <!-- Form thêm sinh viên -->
+                        <div class="form-section">
+                            <h2>Thêm sinh viên mới</h2>
+                            <form id="studentForm" asp-action="Edit" method="post">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label asp-for="Id">Mã sinh viên *</label>
+                                        <input asp-for="Id" value="@Model.Id" type="text" id="studentId" readonly />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="FullName">Họ và tên *</label>
+                                        <input asp-for="FullName" value="@Model.FullName" type="text" id="studentName" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Class">Lớp *</label>
+                                        <input asp-for="Class" value="@Model.Class" type="text" id="studentClass" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Department">Khoa *</label>
+                                        <select asp-for="Department" value="@Model.Department" id="faculty" required>
+                                            <option value="">Chọn khoa</option>
+                                            <option value="Công nghệ thông tin">Công nghệ thông tin</option>
+                                            <option value="Kinh tế">Kinh tế</option>
+                                            <option value="Kỹ thuật">Kỹ thuật</option>
+                                            <option value="Y khoa">Y khoa</option>
+                                            <option value="Luật">Luật</option>
+                                            <option value="Ngoại ngữ">Ngoại ngữ</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhoneNumber">Số điện thoại *</label>
+                                        <input asp-for="PhoneNumber" value="@Model.PhoneNumber" type="tel" id="phone" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Email">Email *</label>
+                                        <input asp-for="Email" value="@Model.Email" type="email" id="email" required />
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar li').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function getRandomSemester() {
+            const semesters = [
+                "Semester 1 - 2024-2025",
+                "Semester 2 - 2024-2025",
+                "Semester 3 - 2024-2025"
+            ];
+            return semesters[Math.floor(Math.random() * semesters.length)];
+        }
+
+        function getRandomTuition() {
+            // Random từ 5 triệu đến 20 triệu
+            return Math.floor(Math.random() * (20000000 - 5000000 + 1)) + 5000000;
+        }
+
+        function getRandomStatus() {
+            const statuses = ["active", "pending", "inactive"];
+            return statuses[Math.floor(Math.random() * statuses.length)];
+        }
+
+        function resetForm() {
+            document.getElementById('studentForm').reset();
+            document.getElementById('semester').value = getRandomSemester();
+            document.getElementById('tuition').value = getRandomTuition();
+            document.getElementById('status').value = getRandomStatus();
+            document.querySelector('.btn-primary').textContent = 'Thêm sinh viên';
+        }
+
+        window.onload = function() {
+            resetForm();
+        };
+    </script>
+</body>
+</html>

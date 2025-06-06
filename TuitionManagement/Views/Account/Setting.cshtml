@@ -1,0 +1,97 @@
+﻿@model TuitionManagement.Models.User
+@{
+    ViewData["Title"] = "Setting";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNU - Hệ thống quản lý học phí sinh viên</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img style="width:60px; height:50px; margin:10px 0;" src="https://fitdnu.net/pluginfile.php/1/theme_edumy/headerlogo1/1740219710/logo-dnu.png">
+        </div>
+        <div class="user-info">
+            <div class="notification">🔔</div>
+            <a href="#" style="text-decoration: none;" class="user-avatar">A</a>
+            <span>Admin</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul>
+                <li><a asp-action="Index" asp-controller="QLSV" style="text-decoration:none; color:black">👥 Quản lý sinh viên</a></li>
+                <li><a asp-action="Index" asp-controller="QLHP" style="text-decoration:none;color:black">💰 Quản lý học phí</a></li>
+                <li>
+                    <a asp-action="Index" asp-controller="LSGD" style="text-decoration:none;color:black">
+                        📈 Lịch sử giao dịch
+                    </a>
+                </li>
+                <li class="active">
+                    <a asp-action="Setting" asp-controller="Account" style="text-decoration:none;color:black">
+                        ⚙️ Cài đặt
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <div class="stats-grid">
+                
+            </div>
+
+            <div class="data-table">
+                <h2 style="text-align:center;margin:10px 0;">Thông tin tài khoản</h2>
+                <div class="table-header">
+
+                    <table class="table">
+                        <tr>
+                            <th>Mã quản lý</th>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>@Model.Email</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>Vai trò</th>
+                            <td>@Model.Role</td>
+                        </tr>
+
+                    </table>
+
+
+                </div>
+                <div style="text-align:center;margin:10px 0;">
+                    <a asp-action="LogOut" asp-controller="Account" class="btn btn-secondary">Đăng xuất</a>
+
+                </div>
+                <div style="text-align:center;margin:10px 0;">
+                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-secondary">Đổi mật khẩu</a>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar li').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

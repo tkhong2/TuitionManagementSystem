@@ -1,0 +1,148 @@
+﻿@model IEnumerable<TuitionManagement.Models.Tuition>
+
+@{
+    ViewData["Title"] = "Tuition";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNU - Hệ thống quản lý học phí sinh viên</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img style="width:60px; height:50px; margin:10px 0;" src="https://fitdnu.net/pluginfile.php/1/theme_edumy/headerlogo1/1740219710/logo-dnu.png">
+        </div>
+        <div class="user-info">
+            <div class="notification">🔔</div>
+            <a href="#" style="text-decoration: none;" class="user-avatar">A</a>
+            <span>Admin</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <nav class="sidebar">
+            <ul>
+                <li><a asp-action="Index" asp-controller="QLSV" style="text-decoration:none; color:black">👥 Quản lý sinh viên</a></li>
+				<li class="active"><a asp-action="Index" asp-controller="QLHP" style="text-decoration:none;color:black">💰 Quản lý học phí</a></li>
+                <li>
+                    <a asp-action="Index" asp-controller="LSGD" style="text-decoration:none;color:black">
+                        📈 Lịch sử giao dịch
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Setting" asp-controller="Account" style="text-decoration:none;color:black">
+                        ⚙️ Cài đặt
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon income">💰</div>
+                    <div class="stat-info">
+                        <h3>@String.Format("{0:N0}₫", ViewBag.totalPaid ?? 0)</h3>
+                        <p>Tổng đã thu</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon outcome">📊</div>
+                    <div class="stat-info">
+                        <h3>@String.Format("{0:N0}₫", ViewBag.totalDue ?? 0)</h3>
+                        <p>Tổng tiền tất cả sinh viên phải nộp đủ</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="data-table">
+                <div class="table-header">
+                    <h2>Danh sách học phí sinh viên </h2>
+                    
+                    <form asp-action="Sort" asp-controller="QLHP" method="get">
+                        <div class="form-group">
+                            
+                            <select name="sortOption" style="padding:10px; border-radius:10px;" required>
+                                <option value="">Sắp xếp giá tiền còn thiếu:</option>
+                                <option value="asc">Giá từ: Bé đến lớn</option>
+                                <option value="desc">Giá từ: Lớn đến bé</option>
+                                <option value="gte1m">Giá tiền từ: 1.000.000đ</option>
+                                <option value="gte5m">Giá tiền từ: 5.000.000đ</option>
+                                <option value="gt10m">Giá trên: 10.000.000đ</option>
+                            </select>
+                            <button class="btn btn-primary" type="submit">Lọc</button>
+                        </div>
+                    </form>
+
+                    <form asp-action="Status" asp-controller="QLHP" method="get">
+                        <div class="form-group">
+
+                            <select name="statusOption" style="padding:10px; border-radius:10px;" required>
+                                <option value="">Trạng thái:</option>
+                                <option value="paid">Paid (Đã đóng)</option>
+                                <option value="pending">Pending (Chưa đóng)</option>
+                                <option value="partial">Partial (Đã đóng được 1 nửa)</option>
+                                
+                            </select>
+                            <button class="btn btn-primary" type="submit">Lọc</button>
+                        </div>
+                    </form>
+
+
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã học phí</th>
+                            <th>Thông tin sinh viên</th>
+                            <th>Kì học</th>
+                            <th>Số tiền đã trả</th>
+                            <th>Số tiền còn thiếu</th>
+                            <th>Trạng thái</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody id="studentTable">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <div><strong>@item.StudentId</strong></div>
+                                    @* <div style="color: #6b7280; font-size: 12px;">@item</div> *@
+                                </td>
+								<td>@item.Semester</td>
+                                <td>@item.AmountPaid</td>
+                                <td>@item.AmountDue</td>
+                                <td>@item.Status</td>
+
+                                
+                            </tr>
+                        }
+
+
+                        
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar li').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
